@@ -1,5 +1,6 @@
 # IMPORT REQUESTS
 import requests
+import time
 # IMPORT KIVY
 import kivy
 from kivy.app import App
@@ -32,8 +33,8 @@ class WeatherApp(App):
         parsed_json['overhead_main'] = json['weather'][0]['main']
         parsed_json['overhead_description'] = json['weather'][0]['description']
         parsed_json['wind_speed'] = json['wind']['speed']
-        parsed_json['sunrise'] = json['sys']['sunrise']
-        parsed_json['sunset'] = json['sys']['sunset']
+        parsed_json['sunrise'] = time.strftime('%H:%M:%S', time.gmtime(json['sys']['sunrise']))
+        parsed_json['sunset'] = time.strftime('%H:%M:%S', time.gmtime(json['sys']['sunset']))
 
         return parsed_json
 
@@ -49,7 +50,7 @@ class WeatherApp(App):
         bl.add_widget( Label( text = "City: {}".format( json['city'] ) ) )
         bl.add_widget( Label( text = "Temperature: max - {}, min - {}".format( json['max_temp'], json['min_temp'] ) ) )
         bl.add_widget( Label( text = "Overhead: main - {}, details - {}".format( json['overhead_main'], json['overhead_description'] ) ) )
-        bl.add_widget( Label( text = "Wind: {}".format( json['wind_speed'] ) ) )
+        bl.add_widget( Label( text = "Wind speed: {}".format( json['wind_speed'] ) ) )
         bl.add_widget( Label( text = "Sunrise: {}, Sunset: {}".format( json['sunrise'], json['sunset'] ) ) )
 
         al.add_widget( bl )
