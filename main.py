@@ -15,9 +15,11 @@ from kivy.uix.button import Button
 
 
 
+
 class Dashboard(Screen):
     def __init__ (self, **kwargs):
         super ().__init__(**kwargs)
+        self.json_data = None
         self.parse_dashboard()
 
 
@@ -31,7 +33,7 @@ class Dashboard(Screen):
 
 
     def find_city_weather(self, isinstance):
-        #self.json_data = self.request(self.city_input.text)
+        self.json_data = self.request(self.city_input.text)
         self.changer()
 
 
@@ -63,18 +65,24 @@ class Weather(Screen):
     def __init__(self, **kwargs):
         super ().__init__(**kwargs)
         self.parse_weather()
+        
 
     def parse_weather(self):
 
-        # print(my_screenmanager.get_screen('screen1'))
+        json = my_screenmanager.get_screen('screen1').json_data
+
+        print('JSON: ',  json)
 
         al = AnchorLayout()
         bl = BoxLayout( orientation = 'vertical', size_hint = [None, None], size = [300, 200] )
 
-        # bl.add_widget( Label( text = "{}".format( json['name'] ) ) )
-        # bl.add_widget( Label( text = "Температура: макс. - {}, мин. - {}".format( json['main']['temp'], json['main']['temp_min'] ) ) )
-        # bl.add_widget( Label( text = "Погода: main - {}, details - {}".format( json['weather'][0]['main'], json['weather'][0]['description'] ) ) )
-        # bl.add_widget( Label( text = "Скорость ветра: {}".format( json['wind']['speed'] ) ) )
+        if json == None:
+            bl.add_widget( Label( text = "{}".format( 'Данных нет') ) )
+        else:
+            bl.add_widget( Label( text = "{}".format( json['name'] ) ) )
+            bl.add_widget( Label( text = "Температура: макс. - {}, мин. - {}".format( json['main']['temp'], json['main']['temp_min'] ) ) )
+            bl.add_widget( Label( text = "Погода: main - {}, details - {}".format( json['weather'][0]['main'], json['weather'][0]['description'] ) ) )
+            bl.add_widget( Label( text = "Скорость ветра: {}".format( json['wind']['speed'] ) ) )
 
         city_button = Button( text='Назад' )
         city_button.bind( on_press=self.changer )
@@ -92,14 +100,13 @@ class Weather(Screen):
 
 
 my_screenmanager = ScreenManager()
+my_screenmanager.add_widget( Dashboard( name='screen1' ) )
+my_screenmanager.add_widget( Weather( name='screen2' ) )
 
 
 class WeatherApp(App):
 
     def build(self):
-        my_screenmanager.add_widget( Dashboard( name='screen1' ) )
-        my_screenmanager.add_widget( Weather( name='screen2' ) )
-
         return my_screenmanager
 
 
