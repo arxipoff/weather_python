@@ -34,6 +34,7 @@ class Dashboard(Screen):
 
     def find_city_weather(self, isinstance):
         self.json_data = self.request(self.city_input.text)
+        my_screenmanager.add_widget( Weather( name='screen2' ) )
         self.changer()
 
 
@@ -95,13 +96,13 @@ class Weather(Screen):
 
     def changer(self, *args):
         my_screenmanager.current = 'screen1'
+        my_screenmanager.remove_widget(self)
 
 
 
 
 my_screenmanager = ScreenManager()
 my_screenmanager.add_widget( Dashboard( name='screen1' ) )
-my_screenmanager.add_widget( Weather( name='screen2' ) )
 
 
 class WeatherApp(App):
