@@ -12,6 +12,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.image import Image
 
 
 
@@ -71,8 +72,10 @@ class Weather(Screen):
     def parse_weather(self):
 
         json = my_screenmanager.get_screen('screen1').json_data
+        #picture_url = "http://openweathermap.org/img/w/{}.png".format( json['weather'][0]['icon'] )
 
         print('JSON: ',  json)
+        #print('PICS: ', picture_url)
 
         al = AnchorLayout()
         bl = BoxLayout( orientation = 'vertical', size_hint = [None, None], size = [300, 200] )
@@ -80,9 +83,11 @@ class Weather(Screen):
         if json == None:
             bl.add_widget( Label( text = "{}".format( 'Данных нет') ) )
         else:
+            #bl.add_widget( Image( source = picture_url, size_hint_y = None ) )
             bl.add_widget( Label( text = "{}".format( json['name'] ) ) )
             bl.add_widget( Label( text = "Температура: макс. - {}, мин. - {}".format( json['main']['temp'], json['main']['temp_min'] ) ) )
             bl.add_widget( Label( text = "Погода: main - {}, details - {}".format( json['weather'][0]['main'], json['weather'][0]['description'] ) ) )
+            bl.add_widget( Label( text = "Облачность: {}%".format( json['clouds']['all'] ) ) )
             bl.add_widget( Label( text = "Скорость ветра: {}".format( json['wind']['speed'] ) ) )
 
         city_button = Button( text='Назад' )
@@ -115,3 +120,7 @@ class WeatherApp(App):
 if __name__ == '__main__':
     WeatherApp().run()
 
+
+
+# TODO: collect weather from most popular resurses and parse all with final sum of all datas 
+# TODO: search is half done , need to add more city select variants
