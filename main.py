@@ -101,6 +101,7 @@ class Weather(Screen):
 
     def changer(self, *args):
         my_screenmanager.current = 'screen1'
+        self.json_data = None
         my_screenmanager.remove_widget(self)
 
 
