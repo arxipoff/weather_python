@@ -15,6 +15,7 @@ from kivy.uix.button import Button
 from kivy.uix.image import Image
 
 
+from api import api_key
 
 
 class Dashboard(Screen):
@@ -26,7 +27,7 @@ class Dashboard(Screen):
 
     def request(self, city):
         # REQUEST URL 
-        request_url= 'https://api.openweathermap.org/data/2.5/weather?q={},ru&units=metric&appid=55ce897ca94456cf36a07274c8c2bc4c'.format(city)
+        request_url= 'https://api.openweathermap.org/data/2.5/weather?q={},ru&units=metric&appid={}'.format(city, api_key)
         # SEND REQUEST AND TRANSLATE RESPONSE INTO JSON
         json_data = requests.get(request_url).json()
         # RETURN JSON
